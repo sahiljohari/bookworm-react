@@ -1,0 +1,28 @@
+div.card {
+  padding: 0px 20px 0px 20px;
+  position: relative;
+}
+
+.image {
+  max-width: 60%;
+  width: 40%;
+  height: auto;
+  float: left;
+  padding: 0px 10px 0px 10px;
+}
+
+body {
+  background-color: #212121;
+}
+
+p {
+  font-family: "Questrial", sans-serif;
+  line-height: 150%;
+  text-align: justify;
+  color: ghostwhite;
+}
+
+h1 {
+  font-family: "Comfortaa", cursive;
+  color: floralwhite;
+}
