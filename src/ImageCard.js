@@ -1,42 +1,23 @@
 // K0lMq6VQppEbemFDuBE0alvSbDgi1Vk1UU6dpM8h
 import React, { Component } from "react";
-import Button from "./control-components/Button";
+import { Button, Card } from "react-bootstrap";
 
 class ImageCard extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      apiKey: "K0lMq6VQppEbemFDuBE0alvSbDgi1Vk1UU6dpM8h",
-      isLoaded: false
-    };
-  }
-
-  componentDidMount() {
-    fetch(`https://api.nasa.gov/planetary/apod?api_key=${this.state.apiKey}`)
-      .then(res => res.json())
-      .then(json => {
-        this.setState({
-          isLoaded: true,
-          items: json
-        });
-      });
-  }
-
   render() {
-    var { isLoaded, items } = this.state;
-    if (!isLoaded) {
-      return <div>Loading...</div>;
-    } else {
-      return (
-        <div className="card">
-          <h1>{items.title}</h1>
-          <img className="image" src={items.url} alt="" />
-          <p>{items.explanation}</p>
-          <Button />
-        </div>
-      );
+    if (this.props.explanation) {
+      const des = this.props.explanation;
+      var summary = des.substr(0, des.indexOf(".")) + ".";
     }
+    return (
+      <Card style={{ width: "18rem", float: "left" }}>
+        <Card.Img variant="top" src={this.props.url} />
+        <Card.Body>
+          <Card.Title>{this.props.title}</Card.Title>
+          <Card.Text>{summary}</Card.Text>
+          <Button variant="primary">Read More</Button>
+        </Card.Body>
+      </Card>
+    );
   }
 }
 export default ImageCard;
