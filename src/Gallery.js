@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Container } from "react-bootstrap";
+import { Container, Navbar } from "react-bootstrap";
 import ImageCard from "./ImageCard";
 
 class Gallery extends Component {
@@ -7,35 +7,52 @@ class Gallery extends Component {
     super(props);
     this.state = {
       items: [],
-      apiKey: "K0lMq6VQppEbemFDuBE0alvSbDgi1Vk1UU6dpM8h"
+      isLoaded: false,
+      apiKey: "a24ed6015b7ba9bd2c93c4a73ff8a430",
+      imageFilePath: ""
     };
   }
 
   componentDidMount() {
-    fetch(`https://api.nasa.gov/planetary/apod?api_key=${this.state.apiKey}`)
+    fetch(
+      `https://api.themoviedb.org/3/movie/upcoming?api_key=${this.state.apiKey}`
+    )
       .then(res => res.json())
       .then(json => {
         this.setState({
-          items: json
+          items: json,
+          isLoaded: true,
+          imageFilePath: "https://image.tmdb.org/t/p/original/"
         });
       });
   }
 
   render() {
-    return (
-      <Container>
-        <ImageCard
-          title={this.state.items.title}
-          explanation={this.state.items.explanation}
-          url={this.state.items.url}
-        />
-        <ImageCard
-          title={this.state.items.title}
-          explanation={this.state.items.explanation}
-          url={this.state.items.url}
-        />
-      </Container>
-    );
+    var { items, isLoaded, imageFilePath } = this.state;
+    if (isLoaded) {
+      return (
+        <Container>
+          <Navbar bg="dark" variant="dark" sticky="top">
+            <Navbar.Brand href="#home">{" Latest Movies "}</Navbar.Brand>
+          </Navbar>
+          <br />
+          <div className="container-home">
+            {items.results.map(item => (
+              <ImageCard
+                key={item.id}
+                rating={item.vote_average}
+                title={item.original_title}
+                explanation={item.overview}
+                filename={item.poster_path}
+                filepath={imageFilePath}
+              />
+            ))}
+          </div>
+        </Container>
+      );
+    } else {
+      return <div>Loading...</div>;
+    }
   }
 }
 

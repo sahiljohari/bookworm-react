@@ -6,11 +6,15 @@ class ImageCard extends Component {
   render() {
     if (this.props.explanation) {
       const des = this.props.explanation;
-      var summary = des.substr(0, des.indexOf(".")) + ".";
+      var summary = des.substr(0, des.indexOf(".") + 1);
     }
     return (
-      <Card style={{ width: "18rem", float: "left" }}>
-        <Card.Img variant="top" src={this.props.url} />
+      <Card bg="dark" text="white">
+        <Card.Header>Rating: {this.props.rating}/10</Card.Header>
+        <Card.Img
+          variant="top"
+          src={this.props.filepath + this.props.filename}
+        />
         <Card.Body>
           <Card.Title>{this.props.title}</Card.Title>
           <Card.Text>{summary}</Card.Text>
