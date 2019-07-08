@@ -5,7 +5,7 @@ import { Button, Card } from "react-bootstrap";
 export default function ImageCard(props) {
   if (props.explanation) {
     const des = props.explanation;
-    var summary = des.substr(0, des.indexOf(".") + 1);
+    var summary = des.substr(0, des.indexOf(".") + 100) + "...";
   }
   return (
     <Card bg="dark" text="white">
