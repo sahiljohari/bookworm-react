@@ -1,59 +1,77 @@
-import React, { Component } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Container, Navbar } from "react-bootstrap";
 import ImageCard from "./ImageCard";
 
-class Gallery extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      items: [],
-      isLoaded: false,
-      apiKey: "a24ed6015b7ba9bd2c93c4a73ff8a430",
-      imageFilePath: ""
-    };
-  }
+const API_KEY = "a24ed6015b7ba9bd2c93c4a73ff8a430";
 
-  componentDidMount() {
-    fetch(
-      `https://api.themoviedb.org/3/movie/upcoming?api_key=${this.state.apiKey}`
-    )
+const initialState = {
+  items: [],
+  apiKey: "",
+  imageFilePath: "",
+  pageState: "loading"
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "getItems":
+      return {
+        ...state,
+        items: action.payload,
+        imageFilePath: action.imgPath,
+        pageState: "loaded"
+      };
+
+    default:
+      return state;
+  }
+}
+
+export default function Gallery() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}`)
       .then(res => res.json())
       .then(json => {
-        this.setState({
-          items: json,
-          isLoaded: true,
-          imageFilePath: "https://image.tmdb.org/t/p/original/"
+        dispatch({
+          type: "getItems",
+          payload: json.results,
+          imgPath: "https://image.tmdb.org/t/p/original/"
         });
       });
-  }
+  }, []);
 
-  render() {
-    var { items, isLoaded, imageFilePath } = this.state;
-    if (isLoaded) {
-      return (
+  let content;
+  switch (state.pageState) {
+    case "loading":
+      content = <div>Loading...</div>;
+      break;
+
+    case "loaded":
+      content = (
         <Container>
           <Navbar bg="dark" variant="dark" sticky="top">
             <Navbar.Brand href="#home">{" Latest Movies "}</Navbar.Brand>
           </Navbar>
           <br />
           <div className="container-home">
-            {items.results.map(item => (
+            {state.items.map(item => (
               <ImageCard
                 key={item.id}
                 rating={item.vote_average}
                 title={item.original_title}
                 explanation={item.overview}
                 filename={item.poster_path}
-                filepath={imageFilePath}
+                filepath={state.imageFilePath}
               />
             ))}
           </div>
         </Container>
       );
-    } else {
-      return <div>Loading...</div>;
-    }
+      break;
+    default:
+      content = null;
+      break;
   }
+  return <div>{content}</div>;
 }
-
-export default Gallery;
