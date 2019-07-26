@@ -3,8 +3,6 @@ import { Container, Navbar } from "react-bootstrap";
 import ImageCard from "./ImageCard";
 import Backdrop from "./Backdrop";
 
-const API_KEY = "a24ed6015b7ba9bd2c93c4a73ff8a430";
-
 const initialState = {
   items: [],
   imageFilePath: "https://image.tmdb.org/t/p",
@@ -42,9 +40,8 @@ function reducer(state, action) {
   }
 }
 
-export default function Gallery() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-
+function fetchData(dispatch) {
+  const API_KEY = "a24ed6015b7ba9bd2c93c4a73ff8a430";
   useEffect(() => {
     fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}`)
       .then(res => res.json())
@@ -66,6 +63,11 @@ export default function Gallery() {
         });
       });
   }, []);
+}
+
+export default function Gallery() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  fetchData(dispatch);
 
   let content;
   switch (state.pageState) {
@@ -76,20 +78,20 @@ export default function Gallery() {
     case "loaded":
       content = (
         <Container>
-          <Navbar bg="dark" variant="dark">
+          <Navbar bg="dark" variant="dark" className="navbar-top">
             <Navbar.Brand href="#home" className="brand">
               {" Movie Hub "}
             </Navbar.Brand>
           </Navbar>
           <Backdrop
-            backdrop_path={
-              state.imageFilePath + `/original/` + state.backdropPath
-            }
+            backdrop_path={state.imageFilePath + `/w780/` + state.backdropPath}
             title={state.backdropTitle}
             description={state.backdropSummary}
           />
-
           <br />
+          <Navbar bg="dark" variant="dark" className="sub-header">
+            <Navbar.Brand>{" Popular this month "}</Navbar.Brand>
+          </Navbar>
           <div className="container-home">
             {state.items.map(item => (
               <ImageCard

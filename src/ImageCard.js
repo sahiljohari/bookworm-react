@@ -8,11 +8,11 @@ export default function ImageCard(props) {
       <Card.Header>Rating: {props.rating} / 10</Card.Header>
       <Card.Img
         variant="top"
-        src={props.filepath + `/original/` + props.filename}
+        src={props.filepath + `/w342/` + props.filename}
       />
       <Card.Body className="c-body">
         {/* <div> */}
-        <Card.Title>{props.title}</Card.Title>
+        <Card.Title className="c-title">{props.title}</Card.Title>
         {/* <Card.Text>{props.explanation}</Card.Text> */}
         {/* </div> */}
         {/* <Button variant="primary">Read More</Button> */}
