@@ -6,17 +6,9 @@ import Backdrop from "./Backdrop";
 const initialState = {
   items: [],
   imageFilePath: "https://image.tmdb.org/t/p",
-  backdropTitle: "",
-  backdropPath: "",
-  backdropSummary: "",
+  backdropItems: [],
   pageState: "loading"
 };
-
-function sortDataByRating(data) {
-  return data
-    .filter(result => result.vote_average !== 0)
-    .sort((a, b) => b.vote_average - a.vote_average);
-}
 
 function reducer(state, action) {
   switch (action.type) {
@@ -30,9 +22,7 @@ function reducer(state, action) {
     case "getNowPlaying":
       return {
         ...state,
-        backdropPath: action.backdropPath,
-        backdropTitle: action.backdropTitle,
-        backdropSummary: action.backdropSummary
+        backdropItems: action.backdropItems
       };
 
     default:
@@ -40,34 +30,41 @@ function reducer(state, action) {
   }
 }
 
-function fetchData(dispatch) {
-  const API_KEY = "a24ed6015b7ba9bd2c93c4a73ff8a430";
+export default function Gallery() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}`)
+    fetch(
+      `${process.env.REACT_APP_API_URL}/3/movie/upcoming?api_key=${
+        process.env.REACT_APP_API_KEY
+      }`
+    )
       .then(res => res.json())
       .then(json => {
         dispatch({
           type: "getItems",
-          payload: sortDataByRating(json.results)
+          payload: json.results
+            .filter(result => result.vote_average !== 0)
+            .sort((a, b) => b.vote_average - a.vote_average)
         });
       });
 
-    fetch(`https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}`)
+    fetch(
+      `${process.env.REACT_APP_API_URL}/3/movie/now_playing?api_key=${
+        process.env.REACT_APP_API_KEY
+      }`
+    )
       .then(res => res.json())
       .then(json => {
         dispatch({
           type: "getNowPlaying",
-          backdropPath: json.results[0].backdrop_path,
-          backdropTitle: json.results[0].title,
-          backdropSummary: json.results[0].overview
+          backdropItems: json.results.filter(
+            result =>
+              result.vote_average !== 0 && result.original_language === "en"
+          )
         });
       });
   }, []);
-}
-
-export default function Gallery() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  fetchData(dispatch);
 
   let content;
   switch (state.pageState) {
@@ -84,10 +81,11 @@ export default function Gallery() {
             </Navbar.Brand>
           </Navbar>
           <Backdrop
-            backdrop_path={state.imageFilePath + `/w780/` + state.backdropPath}
-            title={state.backdropTitle}
-            description={state.backdropSummary}
+            base_url={state.imageFilePath}
+            backdrop_items={state.backdropItems}
+            resolution={"/w1280/"}
           />
+
           <br />
           <Navbar bg="dark" variant="dark" className="sub-header">
             <Navbar.Brand>{" Popular this month "}</Navbar.Brand>
