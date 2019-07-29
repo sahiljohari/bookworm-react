@@ -1,7 +1,9 @@
 import React, { useEffect, useReducer } from "react";
-import { Container, Navbar } from "react-bootstrap";
+import { Container, Nav, Navbar } from "react-bootstrap";
+import { ReactComponent as Logo } from "./assets/undraw_movie_night_93wl.svg";
 import ImageCard from "./ImageCard";
 import Backdrop from "./Backdrop";
+import Footer from "./Footer";
 
 const initialState = {
   items: [],
@@ -35,21 +37,6 @@ export default function Gallery() {
 
   useEffect(() => {
     fetch(
-      `${process.env.REACT_APP_API_URL}/3/movie/upcoming?api_key=${
-        process.env.REACT_APP_API_KEY
-      }`
-    )
-      .then(res => res.json())
-      .then(json => {
-        dispatch({
-          type: "getItems",
-          payload: json.results
-            .filter(result => result.vote_average !== 0)
-            .sort((a, b) => b.vote_average - a.vote_average)
-        });
-      });
-
-    fetch(
       `${process.env.REACT_APP_API_URL}/3/movie/now_playing?api_key=${
         process.env.REACT_APP_API_KEY
       }`
@@ -64,6 +51,21 @@ export default function Gallery() {
           )
         });
       });
+
+    fetch(
+      `${process.env.REACT_APP_API_URL}/3/movie/upcoming?api_key=${
+        process.env.REACT_APP_API_KEY
+      }`
+    )
+      .then(res => res.json())
+      .then(json => {
+        dispatch({
+          type: "getItems",
+          payload: json.results
+            .filter(result => result.vote_average !== 0)
+            .sort((a, b) => b.vote_average - a.vote_average)
+        });
+      });
   }, []);
 
   let content;
@@ -75,10 +77,21 @@ export default function Gallery() {
     case "loaded":
       content = (
         <Container>
-          <Navbar bg="dark" variant="dark" className="navbar-top">
+          <Navbar bg="dark" variant="dark" className="navbar-top" expand="md">
+            <Logo />
             <Navbar.Brand href="#home" className="brand">
               {" Movie Hub "}
             </Navbar.Brand>
+            <Navbar.Toggle aria-controls="basic-navbar-nav" />
+            <Navbar.Collapse id="basic-navbar-nav">
+              <Nav className="mr-auto">
+                <Nav.Link href="#np">Now Playing</Nav.Link>
+                <Nav.Link href="#u">Upcoming</Nav.Link>
+                <Nav.Link href="#p">Popular</Nav.Link>
+                <Nav.Link href="#t">Trending</Nav.Link>
+                <Nav.Link href="#tr">Top Rated</Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
           </Navbar>
           <Backdrop
             base_url={state.imageFilePath}
@@ -87,21 +100,43 @@ export default function Gallery() {
           />
 
           <br />
-          <Navbar bg="dark" variant="dark" className="sub-header">
-            <Navbar.Brand>{" Popular this month "}</Navbar.Brand>
-          </Navbar>
-          <div className="container-home">
-            {state.items.map(item => (
-              <ImageCard
-                key={item.id}
-                rating={item.vote_average}
-                title={item.title}
-                explanation={item.overview}
-                filename={item.poster_path}
-                filepath={state.imageFilePath}
-              />
-            ))}
+
+          <div id="np">
+            <Navbar bg="dark" variant="dark" className="sub-header">
+              <Navbar.Brand>{" Now Playing "}</Navbar.Brand>
+            </Navbar>
+            <div className="container-home">
+              {state.backdropItems.map(item => (
+                <ImageCard
+                  key={item.id}
+                  rating={item.vote_average}
+                  title={item.title}
+                  explanation={item.overview}
+                  filename={item.poster_path}
+                  filepath={state.imageFilePath}
+                />
+              ))}
+            </div>
           </div>
+          <br />
+          <div id="u">
+            <Navbar bg="dark" variant="dark" className="sub-header">
+              <Navbar.Brand>{" Upcoming "}</Navbar.Brand>
+            </Navbar>
+            <div className="container-home">
+              {state.items.map(item => (
+                <ImageCard
+                  key={item.id}
+                  rating={item.vote_average}
+                  title={item.title}
+                  explanation={item.overview}
+                  filename={item.poster_path}
+                  filepath={state.imageFilePath}
+                />
+              ))}
+            </div>
+          </div>
+          <Footer />
         </Container>
       );
       break;

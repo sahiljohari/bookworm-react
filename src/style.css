@@ -1,25 +1,27 @@
 @import url("https://fonts.googleapis.com/css?family=Roboto+Condensed|Anton|Staatliches&display=swap");
 
 body {
-  background-color: #212121;
+  background-color: #222831;
   font-family: "Roboto Condensed", sans-serif;
   font-size: 14px;
 }
 
 .navbar-top {
   padding: 0;
+  background: #222831 !important;
 }
 
 .sub-header {
   padding-left: 10px;
   margin: 1px;
+  background-color: #393e46 !important;
 }
 
 .brand {
   font-family: "Anton", sans-serif;
   padding-left: 10px;
   font-size: 3rem;
-  margin: auto;
+  /* margin: auto; */
 }
 
 div.container-home {
@@ -41,25 +43,6 @@ div.container-home {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.fade {
-  position: relative;
-  height: 3.6em; /* exactly three lines */
-}
-.fade:after {
-  content: "";
-  text-align: right;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: 70%;
-  height: 1.2em;
-  background: linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0),
-    rgba(255, 255, 255, 1) 50%
-  );
 }
 
 .c-body {
@@ -94,7 +77,6 @@ div.container-home {
   /* margin: 0; */
   padding: 5px 10px;
   background: rgba(0, 0, 0, 0.3);
-  /* text-align: right; */
 }
 
 .legend-box {
@@ -105,16 +87,7 @@ div.container-home {
 }
 
 .backdrop-desc {
-  /* position: absolute;
-  bottom: 0px;
-  left: 16px;
-  text-align: justify;
-  width: 95%; */
-  /* left: 0;
-  right: 0;
-  margin-left: -45%; */
   width: 100%;
-  /* border-radius: 10px; */
   color: #fff;
   padding: 10px;
   font-size: 1rem;
@@ -143,4 +116,37 @@ div.container-home {
     bottom: 0px;
     font-size: 2rem;
   }
+}
+
+svg {
+  width: 15%;
+  height: 15%;
+}
+
+.footer {
+  list-style-type: none;
+  margin: 0;
+  margin-top: 5px;
+  padding: 0;
+  overflow: hidden;
+  background-color: #393e46;
+}
+
+.footer li {
+  display: block;
+  text-align: center;
+  color: #fff;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.footer li a {
+  text-decoration: none;
+  color: #01d277;
+}
+
+.footer li a:visited,
+a:active {
+  text-decoration: none;
+  color: #01d277;
 }
