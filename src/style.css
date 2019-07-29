@@ -18,7 +18,7 @@ body {
 .brand {
   font-family: "Anton", sans-serif;
   padding-left: 10px;
-  font-size: 4rem;
+  font-size: 3rem;
   margin: auto;
 }
 
@@ -89,16 +89,58 @@ div.container-home {
 
 .backdrop-title {
   font-family: "Staatliches", cursive;
-  font-size: 5vw;
+  font-size: 3rem;
+  color: #fff;
+  /* margin: 0; */
+  padding: 5px 10px;
+  background: rgba(0, 0, 0, 0.3);
+  /* text-align: right; */
+}
+
+.legend-box {
   position: absolute;
-  bottom: 20px;
-  left: 16px;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .backdrop-desc {
-  position: absolute;
+  /* position: absolute;
   bottom: 0px;
   left: 16px;
   text-align: justify;
-  width: 95%;
+  width: 95%; */
+  /* left: 0;
+  right: 0;
+  margin-left: -45%; */
+  width: 100%;
+  /* border-radius: 10px; */
+  color: #fff;
+  padding: 10px;
+  font-size: 1rem;
+  text-align: center;
+  margin: 0;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.backdrop-bg {
+  position: absolute;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.75));
+  margin: 0;
+  min-height: 100%;
+}
+
+@media only screen and (max-width: 768px) {
+  .backdrop-desc {
+    display: none;
+  }
+
+  .backdrop-title {
+    bottom: 0px;
+    font-size: 2rem;
+  }
 }
