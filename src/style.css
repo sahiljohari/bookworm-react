@@ -45,6 +45,10 @@ div.container-home {
   justify-content: center;
 }
 
+.gallery-section {
+  margin-top: 10px;
+}
+
 .c-body {
   display: flex;
   flex-direction: column;
